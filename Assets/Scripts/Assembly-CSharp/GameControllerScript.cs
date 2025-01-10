@@ -21,7 +21,8 @@ public class GameControllerScript : MonoBehaviour
 	// Token: 0x06000964 RID: 2404 RVA: 0x00021AC4 File Offset: 0x0001FEC4
 	private void Start()
 	{
-		this.cullingMask = this.camera.cullingMask; // Changes cullingMask in the Camera
+		cam = Camera.main;
+		this.cullingMask = cam.cullingMask; // Changes cullingMask in the Camera
 		this.audioDevice = base.GetComponent<AudioSource>(); //Get the Audio Source
 		this.mode = PlayerPrefs.GetString("CurrentMode"); //Get the current mode
 		if (this.mode == "endless") //If it is endless mode
@@ -117,8 +118,11 @@ public class GameControllerScript : MonoBehaviour
 			}
 			Time.timeScale = 0f;
 			this.gameOverDelay -= Time.unscaledDeltaTime * 0.5f;
-			this.camera.farClipPlane = this.gameOverDelay * 400f; //Set camera farClip 
-			this.audioDevice.PlayOneShot(this.aud_buzz);
+			cam.farClipPlane = this.gameOverDelay * 400f; //Set camera farClip 
+			if (!audioDevice.isPlaying)
+			{
+				this.audioDevice.PlayOneShot(this.aud_buzz);
+			}
 			if (PlayerPrefs.GetInt("Rumble") == 1)
 			{
 
@@ -197,6 +201,7 @@ public class GameControllerScript : MonoBehaviour
 				this.UnlockMouse();
 			}
 			Time.timeScale = 0f;
+			AudioListener.pause = true;
 			this.gamePaused = true;
 			this.pauseMenu.SetActive(true);
 		}
@@ -212,6 +217,7 @@ public class GameControllerScript : MonoBehaviour
 	public void UnpauseGame()
 	{
 		Time.timeScale = 1f;
+		AudioListener.pause = false;
 		this.gamePaused = false;
 		this.pauseMenu.SetActive(false);
 		this.LockMouse();
@@ -262,7 +268,7 @@ public class GameControllerScript : MonoBehaviour
 	// Token: 0x06000970 RID: 2416 RVA: 0x00022214 File Offset: 0x00020614
 	public void ActivateLearningGame()
 	{
-		//this.camera.cullingMask = 0; //Sets the cullingMask to nothing
+		cam.cullingMask = 0; //Sets the cullingMask to nothing
 		this.learningActive = true;
 		this.UnlockMouse(); //Unlock the mouse
 		this.tutorBaldi.Stop(); //Make tutor Baldi stop talking
@@ -276,7 +282,7 @@ public class GameControllerScript : MonoBehaviour
 	// Token: 0x06000971 RID: 2417 RVA: 0x00022278 File Offset: 0x00020678
 	public void DeactivateLearningGame(GameObject subject)
 	{
-		this.camera.cullingMask = this.cullingMask; //Sets the cullingMask to Everything
+		cam.cullingMask = this.cullingMask; //Sets the cullingMask to Everything
 		this.learningActive = false;
 		UnityEngine.Object.Destroy(subject);
 		this.LockMouse(); //Prevent the mouse from moving
@@ -593,7 +599,7 @@ public class GameControllerScript : MonoBehaviour
 	public Transform cameraTransform;
 
 	// Token: 0x040005FB RID: 1531
-	public Camera camera;
+	private Camera cam;
 
 	// Token: 0x040005FC RID: 1532
 	private int cullingMask;

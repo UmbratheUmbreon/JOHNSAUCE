@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,16 +12,12 @@ public class SweepScript : MonoBehaviour
 		this.agent = base.GetComponent<NavMeshAgent>();
 		this.audioDevice = base.GetComponent<AudioSource>();
 		this.origin = base.transform.position;
-		this.waitTime = UnityEngine.Random.Range(120f, 180f);
+		this.waitTime = UnityEngine.Random.Range(60f, 90f); //120, 180
 	}
 
 	// Token: 0x060009EE RID: 2542 RVA: 0x0002681C File Offset: 0x00024C1C
 	private void Update()
 	{
-		if (this.coolDown > 0f)
-		{
-			this.coolDown -= 1f * Time.deltaTime;
-		}
 		if (this.waitTime > 0f)
 		{
 			this.waitTime -= Time.deltaTime;
@@ -28,22 +25,36 @@ public class SweepScript : MonoBehaviour
 		else if (!this.active)
 		{
 			this.active = true;
-			this.wanders = 0;
-			this.Wander(); // Start wandering
+			//this.Wander(); // Start wandering
 			this.audioDevice.PlayOneShot(this.aud_Intro); // "Looks like its sweeping time!"
+			base.StartCoroutine(Sweep());
 		}
 	}
 
-	// Token: 0x060009EF RID: 2543 RVA: 0x000268A8 File Offset: 0x00024CA8
+	private IEnumerator Sweep()
+	{
+		while (audioDevice.isPlaying)
+		{
+			yield return null;
+		}
+		audioDevice.PlayOneShot(aud_Sweep);
+		float time = 12.5f;
+		go = true;
+		sprite.sprite = sprites[1];
+		while (time > 0f)
+		{
+			yield return null;
+			time -= Time.deltaTime;
+		}
+		go = false;
+		GoHome();
+	}
+
 	private void FixedUpdate()
 	{
-		if ((double)this.agent.velocity.magnitude <= 0.1 & this.coolDown <= 0f & this.wanders < 5 & this.active) // If Gotta Sweep has roamed around the school 5 times
+		if (this.agent.velocity.magnitude <= 1f & go)
 		{
-			this.Wander(); // Wander
-		}
-		else if (this.wanders >= 5)
-		{
-			this.GoHome(); // Go back to the closet
+			this.Wander(); // Start wandering again
 		}
 	}
 
@@ -52,26 +63,15 @@ public class SweepScript : MonoBehaviour
 	{
 		this.wanderer.GetNewTargetHallway();
 		this.agent.SetDestination(this.wanderTarget.position);
-		this.coolDown = 1f;
-		this.wanders++;
 	}
 
 	// Token: 0x060009F1 RID: 2545 RVA: 0x0002695B File Offset: 0x00024D5B
 	private void GoHome()
 	{
 		this.agent.SetDestination(this.origin);
-		this.waitTime = UnityEngine.Random.Range(120f, 180f);
-		this.wanders = 0;
+		this.waitTime = UnityEngine.Random.Range(100f, 160f);
 		this.active = false;
-	}
-
-	// Token: 0x060009F2 RID: 2546 RVA: 0x00026992 File Offset: 0x00024D92
-	private void OnTriggerEnter(Collider other)
-	{
-		if (other.tag == "NPC" || other.tag == "Player")
-		{
-			this.audioDevice.PlayOneShot(this.aud_Sweep);
-		}
+		sprite.sprite = sprites[0];
 	}
 
 	// Token: 0x0400071B RID: 1819
@@ -80,17 +80,13 @@ public class SweepScript : MonoBehaviour
 	// Token: 0x0400071C RID: 1820
 	public AILocationSelectorScript wanderer;
 
-	// Token: 0x0400071D RID: 1821
-	public float coolDown;
-
 	// Token: 0x0400071E RID: 1822
 	public float waitTime;
 
-	// Token: 0x0400071F RID: 1823
-	public int wanders;
-
 	// Token: 0x04000720 RID: 1824
 	public bool active;
+
+	private bool go = false;
 
 	// Token: 0x04000721 RID: 1825
 	private Vector3 origin;
@@ -106,4 +102,8 @@ public class SweepScript : MonoBehaviour
 
 	// Token: 0x04000725 RID: 1829
 	private AudioSource audioDevice;
+
+	public SpriteRenderer sprite;
+
+	public Sprite[] sprites;
 }

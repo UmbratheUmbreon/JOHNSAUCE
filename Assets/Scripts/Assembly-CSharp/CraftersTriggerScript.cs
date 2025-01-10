@@ -14,13 +14,13 @@ public class CraftersTriggerScript : MonoBehaviour
 	}
 
 	// Token: 0x06000938 RID: 2360 RVA: 0x00021119 File Offset: 0x0001F519
-	private void OnTriggerExit(Collider other)
+	/*private void OnTriggerExit(Collider other)
 	{
 		if (other.tag == "Player")
 		{
 			this.crafters.GiveLocation(this.fleeTarget.position, true);
 		}
-	}
+	}*/
 
 	// Token: 0x040005C0 RID: 1472
 	public Transform goTarget;

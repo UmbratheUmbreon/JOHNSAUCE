@@ -8,7 +8,7 @@ public class MenuController : MonoBehaviour
 	// Token: 0x06000063 RID: 99 RVA: 0x00003D32 File Offset: 0x00002132
 	private void Start()
 	{
-
+		AudioListener.pause = false;
 	}
 
 	// Token: 0x06000064 RID: 100 RVA: 0x00003D45 File Offset: 0x00002145

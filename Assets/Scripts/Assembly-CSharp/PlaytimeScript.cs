@@ -71,7 +71,7 @@ public class PlaytimeScript : MonoBehaviour
 	{
 		this.wanderer.GetNewTargetHallway();
 		this.agent.SetDestination(this.wanderTarget.position);
-		this.agent.speed = 15f;
+		this.agent.speed = 18f;
 		this.playerSpotted = false;
 		this.audVal = Mathf.RoundToInt(UnityEngine.Random.Range(0f, 1f));
 		if (!this.audioDevice.isPlaying)
@@ -86,7 +86,7 @@ public class PlaytimeScript : MonoBehaviour
 	{
 		this.animator.SetBool("disappointed", false); //No longer be sad
 		this.agent.SetDestination(this.player.position); // Go after the player
-		this.agent.speed = 20f; // Speed up
+		this.agent.speed = 22f; // Speed up
 		this.coolDown = 0.2f;
 		if (!this.playerSpotted)
 		{

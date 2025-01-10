@@ -153,7 +153,8 @@ public class PlayerScript : MonoBehaviour
 		}
 		else if (other.transform.name == "Playtime" & !this.jumpRope & this.playtime.playCool <= 0f)
 		{
-			this.ActivateJumpRope();
+			this.playtime.Disappoint();
+			this.playtime.playCool = 15f;
 		}
 	}
 

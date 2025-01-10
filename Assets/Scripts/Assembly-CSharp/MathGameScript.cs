@@ -379,7 +379,6 @@ public class MathGameScript : MonoBehaviour
             this.questionText3.text = string.Empty;
             yield return new WaitForEndOfFrame();
         }
-        yield break;
     }
 
     // Token: 0x04000641 RID: 1601
