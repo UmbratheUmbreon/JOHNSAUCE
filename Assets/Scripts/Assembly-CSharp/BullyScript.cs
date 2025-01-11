@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Video;
+using UnityEngine.UI;
 
 // Token: 0x02000007 RID: 7
 public class BullyScript : MonoBehaviour
@@ -71,23 +74,35 @@ public class BullyScript : MonoBehaviour
 	{
 		if (other.transform.tag == "Player") // If touching the player
 		{
-			if (this.gc.item[0] == 0 & this.gc.item[1] == 0 & this.gc.item[2] == 0) // If the player has no items
-			{
-				this.audioDevice.PlayOneShot(this.aud_Denied); // "What, no items? No Items? No passsssss"
-			}
-			else
-			{
-				int num = Mathf.RoundToInt(UnityEngine.Random.Range(0f, 2f)); //Get a random item slot
-				while (this.gc.item[num] == 0) //If the selected slot is empty
-				{
-					num = Mathf.RoundToInt(UnityEngine.Random.Range(0f, 2f)); // Choose another slot
-				}
-				this.gc.LoseItem(num); // Remove the item selected
-				int num2 = Mathf.RoundToInt(UnityEngine.Random.Range(0f, 1f));
-				this.audioDevice.PlayOneShot(this.aud_Thanks[num2]);
-				this.Reset();
-			}
+			base.StartCoroutine(Bazinga());
+			Reset();
 		}
+	}
+
+	private IEnumerator Bazinga()
+	{
+		bazingaOverlay.SetActive(true);
+		image.color = new Color(0f, 0f, 0f, 0f);
+        video.Prepare();
+        while (!video.isPrepared)
+        {
+            yield return null;
+        }
+		image.color = Color.white;
+        image.texture = video.texture;
+        video.Play();
+		video.time = 7;
+		CharacterController cc = player.gameObject.GetComponent<CharacterController>();
+		cc.enabled = false;
+        while (video.time < 14)
+        {
+			wanderer.GetNewTarget();
+			player.position = wanderTarget.position + new Vector3(0f, 4f, 0f);
+            yield return null;
+        }
+		cc.enabled = true;
+		bazingaOverlay.SetActive(false);
+        yield break;
 	}
 
 	// Token: 0x06000019 RID: 25 RVA: 0x00002733 File Offset: 0x00000B33
@@ -108,6 +123,12 @@ public class BullyScript : MonoBehaviour
 		this.activeTime = 0f; //Reset active time
 		this.spoken = false; //Reset spoken
 	}
+
+	public GameObject bazingaOverlay;
+
+	public RawImage image;
+
+	public VideoPlayer video;
 
 	// Token: 0x04000012 RID: 18
 	public Transform player;

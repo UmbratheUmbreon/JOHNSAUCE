@@ -46,6 +46,10 @@ public class PrincipalScript : MonoBehaviour
 	// Token: 0x060009BE RID: 2494 RVA: 0x00025048 File Offset: 0x00023448
 	private void FixedUpdate()
 	{
+		if (chaired)
+		{
+			return;
+		}
 		if (!this.angry) // If the principal isn't angry
 		{
 			this.aim = this.player.position - base.transform.position; // If he sees the player and the player has guilt
@@ -185,6 +189,37 @@ public class PrincipalScript : MonoBehaviour
 		}
 	}
 
+	public void GetChaired()
+	{
+		officeDoor.lockTime = 0f;
+		playerScript.guilt = 0f;
+		seesRuleBreak = false;
+		angry = false;
+		timeSeenRuleBreak = 0f;
+		agent.isStopped = true;
+		coolDown = float.PositiveInfinity;
+		sprite.sprite = sprites[2];
+		spriteTrans.localPosition = new Vector3(0f, -0.174f, 0f);
+		audioQueue.ClearAudioQueue();
+		audioQueue.QueueAudio(audChair);
+		chaired = true;
+	}
+
+	public void UnChair()
+	{
+		if (!chaired)
+		{
+			return;
+		}
+		agent.isStopped = false;
+		coolDown = 0f;
+		sprite.sprite = sprites[1];
+		spriteTrans.localPosition = Vector3.up;
+		chaired = false;
+	}
+
+	public Transform spriteTrans;
+
 	// Token: 0x040006B8 RID: 1720
 	public bool seesRuleBreak;
 
@@ -239,6 +274,9 @@ public class PrincipalScript : MonoBehaviour
 		60,
 		99
 	};
+
+	// Token: 0x040006CA RID: 1738
+	public AudioClip audChair;
 
 	// Token: 0x040006C8 RID: 1736
 	public AudioClip[] audTimes = new AudioClip[5];
@@ -299,4 +337,6 @@ public class PrincipalScript : MonoBehaviour
 	public SpriteRenderer sprite;
 
 	public Sprite[] sprites;
+
+	private bool chaired = false;
 }

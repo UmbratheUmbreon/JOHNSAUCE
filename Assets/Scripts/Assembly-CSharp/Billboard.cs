@@ -1,21 +1,46 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x020000B3 RID: 179
 public class Billboard : MonoBehaviour
 {
-	// Token: 0x06000927 RID: 2343 RVA: 0x00020BD5 File Offset: 0x0001EFD5
 	private void Start()
 	{
-		this.m_Camera = Camera.main;
+		c = Camera.main;
+		t = c.transform;
+		x = (maintainXZRot ? base.transform.eulerAngles.x : 0f);
+		z = (maintainXZRot ? base.transform.eulerAngles.z : 0f);
 	}
 
-	// Token: 0x06000928 RID: 2344 RVA: 0x00020BE2 File Offset: 0x0001EFE2
-	private void LateUpdate()
+	private void OnBecameVisible()
 	{
-		base.transform.LookAt(base.transform.position + this.m_Camera.transform.rotation * Vector3.forward); // Look towards the player
+		SetRotation();
 	}
 
-	// Token: 0x040005AC RID: 1452
-	private Camera m_Camera;
+	private void OnWillRenderObject()
+	{
+		SetRotation();
+	}
+
+	private void SetRotation()
+	{
+		//base.transform.LookAt(base.transform.position + t.rotation * Vector3.forward);
+		//base.transform.rotation = Quaternion.Euler(0f, t.eulerAngles.y, 0f);
+		if (c == null)
+		{
+			return;
+		}
+		base.transform.rotation = (maintainXZRot ? Quaternion.Euler(x, t.eulerAngles.y, z) : new Quaternion(x, t.rotation.y, z, t.rotation.w));
+	}
+
+	public bool maintainXZRot = false;
+
+	private Camera c;
+
+	private Transform t;
+
+	[NonSerialized]
+	public float x;
+
+	[NonSerialized]
+	public float z;
 }

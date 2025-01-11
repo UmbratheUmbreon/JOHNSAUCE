@@ -171,6 +171,7 @@ public class GameControllerScript : MonoBehaviour
 	{
 		this.notebooks++;
 		this.UpdateNotebookCount();
+		principal.GetComponent<PrincipalScript>().UnChair();
 	}
 
 	// Token: 0x06000968 RID: 2408 RVA: 0x0002203A File Offset: 0x0002043A
@@ -400,7 +401,7 @@ public class GameControllerScript : MonoBehaviour
 			}
 			else if (this.item[this.itemSelected] == 4)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.bsodaSpray, this.playerTransform.position, this.cameraTransform.rotation);
+				UnityEngine.Object.Instantiate<GameObject>(this.bsodaSpray, this.playerTransform.position + Vector3.up, this.cameraTransform.rotation);
 				this.ResetItem();
 				this.player.ResetGuilt("drink", 1f);
 				this.audioDevice.PlayOneShot(this.aud_Soda);
@@ -446,79 +447,37 @@ public class GameControllerScript : MonoBehaviour
 			}
 			else if (this.item[this.itemSelected] == 8)
 			{
-				Ray ray5 = Camera.main.ScreenPointToRay(new Vector3((float)(Screen.width / 2), (float)(Screen.height / 2), 0f));
-				RaycastHit raycastHit5;
-				if (Physics.Raycast(ray5, out raycastHit5) && (raycastHit5.collider.tag == "Door" & Vector3.Distance(this.playerTransform.position, raycastHit5.transform.position) <= 10f))
-				{
-					raycastHit5.collider.gameObject.GetComponent<DoorScript>().SilenceDoor();
-					this.ResetItem();
-					this.audioDevice.PlayOneShot(this.aud_Spray);
-				}
+				gottaSweep.GetComponent<SweepScript>().waitTime = 0f;
+				ResetItem();
 			}
 			else if (this.item[this.itemSelected] == 9)
 			{
 				Ray ray6 = Camera.main.ScreenPointToRay(new Vector3((float)(Screen.width / 2), (float)(Screen.height / 2), 0f));
 				RaycastHit raycastHit6;
-				if (this.player.jumpRope)
+				if (Physics.Raycast(ray6, out raycastHit6))
 				{
-					this.player.DeactivateJumpRope();
-					this.playtimeScript.Disappoint();
-					this.ResetItem();
-				}
-				else if (Physics.Raycast(ray6, out raycastHit6) && raycastHit6.collider.name == "1st Prize")
-				{
-					this.firstPrizeScript.GoCrazy();
-					this.ResetItem();
+					switch(raycastHit6.collider.name)
+					{
+						/*case "1st Prize":
+							firstPrizeScript.GoCrazy();
+							ResetItem();
+							break;*/
+						case "Principal of the Thing":
+							principal.gameObject.GetComponent<PrincipalScript>().GetChaired();
+							ResetItem();
+							break;
+					}
+
 				}
 			}
 			else if (this.item[this.itemSelected] == 10)
 			{
-				this.player.ActivateBoots();
-				base.StartCoroutine(this.BootAnimation());
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.campfire, this.playerTransform.position, this.cameraTransform.rotation);
+				Destroy(gameObject, 30f);
+				crafters.GetComponent<CraftersScript>().TargetCampfire(gameObject);
 				this.ResetItem();
 			}
 		}
-	}
-
-	// Token: 0x06000977 RID: 2423 RVA: 0x00022B40 File Offset: 0x00020F40
-	private IEnumerator BootAnimation()
-	{
-		float time = 15f;
-		float height = 375f;
-		Vector3 position = default(Vector3);
-		this.boots.gameObject.SetActive(true);
-		while (height > -375f)
-		{
-			height -= 375f * Time.deltaTime;
-			time -= Time.deltaTime;
-			position = this.boots.localPosition;
-			position.y = height;
-			this.boots.localPosition = position;
-			yield return null;
-		}
-		position = this.boots.localPosition;
-		position.y = -375f;
-		this.boots.localPosition = position;
-		this.boots.gameObject.SetActive(false);
-		while (time > 0f)
-		{
-			time -= Time.deltaTime;
-			yield return null;
-		}
-		this.boots.gameObject.SetActive(true);
-		while (height < 375f)
-		{
-			height += 375f * Time.deltaTime;
-			position = this.boots.localPosition;
-			position.y = height;
-			this.boots.localPosition = position;
-			yield return null;
-		}
-		position = this.boots.localPosition;
-		position.y = 375f;
-		this.boots.localPosition = position;
-		this.boots.gameObject.SetActive(false);
-		yield break;
 	}
 
 	// Token: 0x06000978 RID: 2424 RVA: 0x00022B5B File Offset: 0x00020F5B
@@ -712,14 +671,14 @@ public class GameControllerScript : MonoBehaviour
 		"Nothing",
 		"Jelly Donut",
 		"Yellow Door Lock",
-		"Principal's Keys",
+		"Keygen",
 		"<i><u>Duff</u></i> BEER",
-		"Quarter",
+		"Windows XP Product Key",
 		"Baldi Anti Hearing and Disorienting Tape",
 		"Alarm Clock",
-		"WD-NoSquee (Door Type)",
-		"Safety Scissors",
-		"Big Ol' Boots"
+		"Rice Cake",
+		"Chair",
+		"Campfire"
 	};
 
 	// Token: 0x0400061F RID: 1567
@@ -730,6 +689,8 @@ public class GameControllerScript : MonoBehaviour
 
 	// Token: 0x04000621 RID: 1569
 	public Texture[] itemTextures = new Texture[10];
+
+	public GameObject campfire;
 
 	// Token: 0x04000622 RID: 1570
 	public GameObject bsodaSpray;

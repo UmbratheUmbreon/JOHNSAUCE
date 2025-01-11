@@ -25,6 +25,10 @@ public class Orb : MonoBehaviour
             {
                 SpawnNew();
             }
+            if (orbsCollected == 20)
+            {
+                finalOrb.position = new Vector3(-10f, 3f, 0f);
+            }
             if (orbsCollected == 21)
             {
                 BeatGame();
@@ -69,6 +73,9 @@ public class Orb : MonoBehaviour
         player.walkSpeed /= 1.25f;
         yield break;
     }
+
+    [SerializeField]
+    private Transform finalOrb;
 
     [SerializeField]
     private PlayerScript player;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,7 +24,7 @@ public class CraftersScript : MonoBehaviour
 	// Token: 0x060009B0 RID: 2480 RVA: 0x00024BAC File Offset: 0x00022FAC
 	private void FixedUpdate()
 	{
-		if (cooldown > 0f)
+		if (cooldown > 0f || camping)
 		{
 			return;
 		}
@@ -48,10 +49,30 @@ public class CraftersScript : MonoBehaviour
 	// Token: 0x060009B1 RID: 2481 RVA: 0x00024C65 File Offset: 0x00023065
 	public void GiveLocation(Vector3 location, bool flee)
 	{
+		if (camping)
+		{
+			return;
+		}
 		if (this.agent.isActiveAndEnabled)
 		{
 			this.agent.SetDestination(location);
 		}
+	}
+
+	public void TargetCampfire(GameObject gameObject)
+	{
+		audioDevice.PlayOneShot(aud_WOw);
+		agent.SetDestination(gameObject.transform.position);
+		cooldown = 30f;
+		camping = true;
+		base.StartCoroutine(Camping());
+	}
+
+	private IEnumerator Camping()
+	{
+		yield return new WaitForSeconds(30f);
+		camping = false;
+		yield break;
 	}
 
 	// Token: 0x060009B3 RID: 2483 RVA: 0x00024CBC File Offset: 0x000230BC
@@ -115,7 +136,11 @@ public class CraftersScript : MonoBehaviour
 	// Token: 0x040006AE RID: 1710
 	public AudioClip aud_Loop;
 
+	public AudioClip aud_WOw;
+
 	private bool announced = false;
 
 	private float cooldown = 0f;
+
+	private bool camping = false;
 }

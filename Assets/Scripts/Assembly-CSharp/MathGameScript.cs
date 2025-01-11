@@ -63,13 +63,11 @@ public class MathGameScript : MonoBehaviour
         this.playerAnswer.ActivateInputField();
         if (this.problem <= 3)
         {
-            this.QueueAudio(this.bal_problems[this.problem - 1]);
             if ((this.gc.mode == "story" & (this.problem <= 2 || this.gc.notebooks <= 1)) || (this.gc.mode == "endless" & (this.problem <= 2 || this.gc.notebooks != 2)))
             {
                 this.num1 = (float)Mathf.RoundToInt(UnityEngine.Random.Range(0f, 9f));
                 this.num2 = (float)Mathf.RoundToInt(UnityEngine.Random.Range(0f, 9f));
                 this.sign = Mathf.RoundToInt(UnityEngine.Random.Range(0f, 1f));
-                this.QueueAudio(this.bal_numbers[Mathf.RoundToInt(this.num1)]);
                 if (this.sign == 0)
                 {
                     this.solution = this.num1 + this.num2;
@@ -83,7 +81,6 @@ public class MathGameScript : MonoBehaviour
                         this.num2,
                         "="
                     });
-                    this.QueueAudio(this.bal_plus);
                 }
                 else if (this.sign == 1)
                 {
@@ -98,10 +95,7 @@ public class MathGameScript : MonoBehaviour
                         this.num2,
                         "="
                     });
-                    this.QueueAudio(this.bal_minus);
                 }
-                this.QueueAudio(this.bal_numbers[Mathf.RoundToInt(this.num2)]);
-                this.QueueAudio(this.bal_equals);
             }
             else
             {
@@ -125,9 +119,7 @@ public class MathGameScript : MonoBehaviour
                         this.num3,
                         "="
                     });
-                    this.QueueAudio(this.bal_plus);
                     this.QueueAudio(this.bal_screech);
-                    this.QueueAudio(this.bal_times);
                     this.QueueAudio(this.bal_screech);
                 }
                 else if (this.sign == 1)
@@ -144,9 +136,7 @@ public class MathGameScript : MonoBehaviour
                         this.num3,
                         "="
                     });
-                    this.QueueAudio(this.bal_divided);
                     this.QueueAudio(this.bal_screech);
-                    this.QueueAudio(this.bal_plus);
                     this.QueueAudio(this.bal_screech);
                 }
                 this.num1 = UnityEngine.Random.Range(1f, 9999f);
@@ -217,7 +207,6 @@ public class MathGameScript : MonoBehaviour
                         "="
                     });
                 }
-                this.QueueAudio(this.bal_equals);
             }
             this.questionInProgress = true;
         }
@@ -420,21 +409,6 @@ public class MathGameScript : MonoBehaviour
     // Token: 0x0400064D RID: 1613
     public Transform baldiFeedTransform;
 
-    // Token: 0x0400064E RID: 1614
-    public AudioClip bal_plus;
-
-    // Token: 0x0400064F RID: 1615
-    public AudioClip bal_minus;
-
-    // Token: 0x04000650 RID: 1616
-    public AudioClip bal_times;
-
-    // Token: 0x04000651 RID: 1617
-    public AudioClip bal_divided;
-
-    // Token: 0x04000652 RID: 1618
-    public AudioClip bal_equals;
-
     // Token: 0x04000653 RID: 1619
     public AudioClip bal_howto;
 
@@ -444,14 +418,8 @@ public class MathGameScript : MonoBehaviour
     // Token: 0x04000655 RID: 1621
     public AudioClip bal_screech;
 
-    // Token: 0x04000656 RID: 1622
-    public AudioClip[] bal_numbers = new AudioClip[10];
-
     // Token: 0x04000657 RID: 1623
     public AudioClip[] bal_praises = new AudioClip[5];
-
-    // Token: 0x04000658 RID: 1624
-    public AudioClip[] bal_problems = new AudioClip[3];
 
     // Token: 0x04000659 RID: 1625
     public Button firstButton;

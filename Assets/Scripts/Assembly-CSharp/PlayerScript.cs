@@ -155,6 +155,7 @@ public class PlayerScript : MonoBehaviour
 		if (other.transform.CompareTag("Joe"))
 		{
 			base.transform.LookAt(other.transform);
+			base.transform.eulerAngles = new Vector3(0f, base.transform.eulerAngles.y, 0f);
 			playerRotation = base.transform.rotation;
 			other.transform.gameObject.GetComponent<AgentTest>().Die();
 			return;
