@@ -58,7 +58,8 @@ public class BsodaEffectScript : MonoBehaviour
 	private Vector3 otherVelocity;
 
 	// Token: 0x04000010 RID: 16
-	private bool inBsoda;
+	[NonSerialized]
+	public bool inBsoda;
 
 	// Token: 0x04000011 RID: 17
 	private float failSave;

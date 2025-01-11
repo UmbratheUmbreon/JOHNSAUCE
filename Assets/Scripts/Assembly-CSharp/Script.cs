@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Video;
 
 // Token: 0x020000B1 RID: 177
 public class Script : MonoBehaviour
@@ -16,6 +17,10 @@ public class Script : MonoBehaviour
 		{
 			Application.Quit();
 		}
+		if (this.played)
+		{
+			base.transform.localScale += new Vector3(Time.deltaTime / 10f, Time.deltaTime / -100f, 0f);
+		}
 	}
 
 	// Token: 0x0600091E RID: 2334 RVA: 0x00020ACB File Offset: 0x0001EECB
@@ -24,12 +29,15 @@ public class Script : MonoBehaviour
 		if (other.name == "Player" & !this.played)
 		{
 			this.audioDevice.Play();
+			video.Play();
 			this.played = true;
 		}
 	}
 
 	// Token: 0x040005A7 RID: 1447
 	public AudioSource audioDevice;
+
+	public VideoPlayer video;
 
 	// Token: 0x040005A8 RID: 1448
 	private bool played;

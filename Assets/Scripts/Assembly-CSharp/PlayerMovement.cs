@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
 	private float sensitivity;
 
 	// Token: 0x040006E7 RID: 1767
-	private float mouseSensitivity;
+	private float mouseSensitivity = 1f;
 
 	// Token: 0x040006E8 RID: 1768
 	private bool running;

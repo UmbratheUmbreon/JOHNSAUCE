@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,6 +22,10 @@ public class PrincipalScript : MonoBehaviour
 			this.timeSeenRuleBreak += 1f * Time.deltaTime;
 			if ((double)this.timeSeenRuleBreak >= 0.5 & !this.angry) // If the principal sees the player break a rule for more then 1/2 of a second
 			{
+				if (playerScript.guiltType != "drink")
+				{
+					sprite.sprite = sprites[0];
+				}
 				this.angry = true;
 				this.seesRuleBreak = false;
 				this.timeSeenRuleBreak = 0f;
@@ -156,7 +161,15 @@ public class PrincipalScript : MonoBehaviour
 			{
 				this.detentions = 4;
 			}
+			base.StartCoroutine(Wait());
 		}
+	}
+	
+	private IEnumerator Wait()
+	{
+		yield return new WaitForSeconds(5f);
+		sprite.sprite = sprites[1];
+		yield break;
 	}
 
 	// Token: 0x060009C4 RID: 2500 RVA: 0x0002555E File Offset: 0x0002395E
@@ -282,4 +295,8 @@ public class PrincipalScript : MonoBehaviour
 	private Vector3 aim;
 
 	public CharacterController cc;
+
+	public SpriteRenderer sprite;
+
+	public Sprite[] sprites;
 }

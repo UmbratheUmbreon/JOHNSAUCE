@@ -710,10 +710,10 @@ public class GameControllerScript : MonoBehaviour
 	private string[] itemNames = new string[]
 	{
 		"Nothing",
-		"Energy flavored Zesty Bar",
+		"Jelly Donut",
 		"Yellow Door Lock",
 		"Principal's Keys",
-		"BSODA",
+		"<i><u>Duff</u></i> BEER",
 		"Quarter",
 		"Baldi Anti Hearing and Disorienting Tape",
 		"Alarm Clock",

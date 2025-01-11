@@ -19,6 +19,10 @@ public class PlayerScript : MonoBehaviour
 		this.stamina = this.maxStamina;
 		this.playerRotation = base.transform.rotation;
 		this.mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity");
+		if (mouseSensitivity <= 0.01f)
+		{
+			mouseSensitivity = 1f;
+		}
 		this.principalBugFixer = 1;
 		this.flipaturn = 1f;
 	}
@@ -31,7 +35,7 @@ public class PlayerScript : MonoBehaviour
 		this.PlayerMove();
 		this.StaminaCheck();
 		this.GuiltCheck();
-		if (this.cc.velocity.magnitude > 0f)
+		if (this.cc.velocity.magnitude > 0f && gc != null)
 		{
 			this.gc.LockMouse();
 		}
@@ -139,19 +143,29 @@ public class PlayerScript : MonoBehaviour
 		{
 			this.stamina += this.staminaRate * Time.deltaTime;
 		}
-		this.staminaBar.value = this.stamina / this.maxStamina * 100f;
+		if (staminaBar != null)
+		{
+			this.staminaBar.value = this.stamina / this.maxStamina * 100f;
+		}
 	}
 
 	// Token: 0x060009D8 RID: 2520 RVA: 0x000262F0 File Offset: 0x000246F0
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.transform.name == "Baldi" & !this.gc.debugMode)
+		if (other.transform.CompareTag("Joe"))
+		{
+			base.transform.LookAt(other.transform);
+			playerRotation = base.transform.rotation;
+			other.transform.gameObject.GetComponent<AgentTest>().Die();
+			return;
+		}
+		if (other.transform.name == "Baldi" && !this.gc.debugMode)
 		{
 			this.gameOver = true;
 			RenderSettings.skybox = this.blackSky; //Sets the skybox black
 			base.StartCoroutine(this.KeepTheHudOff()); //Hides the Hud
 		}
-		else if (other.transform.name == "Playtime" & !this.jumpRope & this.playtime.playCool <= 0f)
+		else if (other.transform.name == "Playtime" && !this.jumpRope && this.playtime.playCool <= 0f)
 		{
 			this.playtime.Disappoint();
 			this.playtime.playCool = 15f;
@@ -180,7 +194,7 @@ public class PlayerScript : MonoBehaviour
 			this.sweeping = true;
 			this.sweepingFailsave = 1f;
 		}
-		else if (other.transform.name == "1st Prize" & this.firstPrize.velocity.magnitude > 5f)
+		else if (other.transform.name == "1st Prize" && this.firstPrize.velocity.magnitude > 5f && !firstPrize.gameObject.GetComponent<BsodaEffectScript>().inBsoda)
 		{
 			this.hugging = true;
 			this.sweepingFailsave = 1f;

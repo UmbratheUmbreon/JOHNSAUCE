@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +11,7 @@ public class AgentTest : MonoBehaviour
 	{
 		this.agent = base.GetComponent<NavMeshAgent>(); // Define the AI Agent
 		this.Wander(); //Start wandering
+		base.GetComponent<CursorControllerScript>().LockCursor();
 	}
 
 	// Token: 0x0600099A RID: 2458 RVA: 0x00024331 File Offset: 0x00022731
@@ -56,6 +58,20 @@ public class AgentTest : MonoBehaviour
 		this.coolDown = 1f;
 	}
 
+	public void Die()
+	{
+		source.PlayOneShot(jumpscare);
+		Time.timeScale = 0f;
+		base.StartCoroutine(Jumpy());
+	}
+
+	private IEnumerator Jumpy()
+	{
+		yield return new WaitForSecondsRealtime(1.5f);
+		Application.Quit();
+		yield break;
+	}
+
 	// Token: 0x04000676 RID: 1654
 	public bool db;
 
@@ -73,4 +89,10 @@ public class AgentTest : MonoBehaviour
 
 	// Token: 0x0400067B RID: 1659
 	private NavMeshAgent agent;
+
+	[SerializeField]
+	private AudioSource source;
+
+	[SerializeField]
+	private AudioClip jumpscare;
 }
