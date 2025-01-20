@@ -122,6 +122,10 @@ public class PlayerScript : MonoBehaviour
 				this.moveDirection = new Vector3(0f, 0f, 0f);
 			}
 		}
+		if (!cc.enabled)
+		{
+			return;
+		}
 		this.cc.Move(this.moveDirection);
 	}
 

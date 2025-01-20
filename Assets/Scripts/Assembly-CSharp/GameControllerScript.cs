@@ -154,11 +154,11 @@ public class GameControllerScript : MonoBehaviour
 	{
 		if (this.mode == "story")
 		{
-			this.notebookCount.text = this.notebooks.ToString() + "/7 Notebooks";
+			this.notebookCount.text = this.notebooks.ToString() + "/7 Ghost Busters";
 		}
 		else
 		{
-			this.notebookCount.text = this.notebooks.ToString() + " Notebooks";
+			this.notebookCount.text = this.notebooks.ToString() + " Ghost Busters";
 		}
 		if (this.notebooks == 7 & this.mode == "story")
 		{
@@ -670,12 +670,12 @@ public class GameControllerScript : MonoBehaviour
 	{
 		"Nothing",
 		"Jelly Donut",
-		"Yellow Door Lock",
+		"Greg",
 		"Keygen",
 		"<i><u>Duff</u></i> BEER",
 		"Windows XP Product Key",
 		"Baldi Anti Hearing and Disorienting Tape",
-		"Alarm Clock",
+		"The Tube.",
 		"Rice Cake",
 		"Chair",
 		"Campfire"

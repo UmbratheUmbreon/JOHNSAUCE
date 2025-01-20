@@ -76,6 +76,7 @@ public class SwingingDoorScript : MonoBehaviour
 		this.lockTime = time;
 		this.inside.material = this.locked;
 		this.outside.material = this.locked;
+		this.myAudio.PlayOneShot(this.gottaGREGGREGGREG, 1f);
 	}
 
 	// Token: 0x0600094A RID: 2378 RVA: 0x000216C8 File Offset: 0x0001FAC8
@@ -123,6 +124,8 @@ public class SwingingDoorScript : MonoBehaviour
 
 	// Token: 0x040005E4 RID: 1508
 	public AudioClip baldiDoor;
+
+	public AudioClip gottaGREGGREGGREG;
 
 	// Token: 0x040005E5 RID: 1509
 	private float openTime;
