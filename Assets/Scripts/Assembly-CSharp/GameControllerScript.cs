@@ -12,8 +12,8 @@ public class GameControllerScript : MonoBehaviour
 	public GameControllerScript()
 	{
 		int[] array = new int[3];
-		array[0] = -80;
-		array[1] = -40;
+		array[0] = -73;
+		array[1] = -37;
 		this.itemSelectOffset = array;
 		//base..ctor();
 	}
@@ -674,7 +674,7 @@ public class GameControllerScript : MonoBehaviour
 		"Keygen",
 		"<i><u>Duff</u></i> BEER",
 		"Windows XP Product Key",
-		"Baldi Anti Hearing and Disorienting Tape",
+		"Windows Media Player Cursor",
 		"The Tube.",
 		"Rice Cake",
 		"Chair",
