@@ -36,6 +36,11 @@ public class GameControllerScript : MonoBehaviour
 		this.gameOverDelay = 0.5f;
 	}
 
+	public void StopAudio()
+	{
+		audioDevice.Stop();
+	}
+
 	// Token: 0x06000965 RID: 2405 RVA: 0x00021B5C File Offset: 0x0001FF5C
 	private void Update()
 	{
@@ -154,11 +159,11 @@ public class GameControllerScript : MonoBehaviour
 	{
 		if (this.mode == "story")
 		{
-			this.notebookCount.text = this.notebooks.ToString() + "/7 Ghost Busters";
+			this.notebookCount.text = this.notebooks.ToString() + "/7 Moneys";
 		}
 		else
 		{
-			this.notebookCount.text = this.notebooks.ToString() + " Ghost Busters";
+			this.notebookCount.text = this.notebooks.ToString() + " Moneys";
 		}
 		if (this.notebooks == 7 & this.mode == "story")
 		{
@@ -241,7 +246,6 @@ public class GameControllerScript : MonoBehaviour
         this.bully.SetActive(true); //Turns on Bully
         this.firstPrize.SetActive(true); //Turns on First-Prize
 		//this.TestEnemy.SetActive(true); //Turns on Test-Enemy
-		this.audioDevice.PlayOneShot(this.aud_Hang); //Plays the hang sound
 		this.learnMusic.Stop(); //Stop all the music
 		this.schoolMusic.Stop();
 	}

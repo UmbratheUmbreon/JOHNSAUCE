@@ -167,6 +167,7 @@ public class PlayerScript : MonoBehaviour
 		if (other.transform.name == "Baldi" && !this.gc.debugMode)
 		{
 			this.gameOver = true;
+			gc.StopAudio();
 			RenderSettings.skybox = this.blackSky; //Sets the skybox black
 			base.StartCoroutine(this.KeepTheHudOff()); //Hides the Hud
 		}

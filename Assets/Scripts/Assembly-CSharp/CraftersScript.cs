@@ -88,7 +88,7 @@ public class CraftersScript : MonoBehaviour
 			//this.gc.DespawnCrafters(); // Despawn Arts And Crafters
 			audioDevice.PlayOneShot(aud_Loop);
 			spriteImage.sprite = angrySprite;
-			cooldown = 45f;
+			cooldown = 60f;
 		}
 	}
 

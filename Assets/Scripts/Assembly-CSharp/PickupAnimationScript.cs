@@ -1,21 +1,24 @@
 ﻿using System;
 using UnityEngine;
 
-// Token: 0x020000CE RID: 206
 public class PickupAnimationScript : MonoBehaviour
 {
-	// Token: 0x060009C6 RID: 2502 RVA: 0x000255A0 File Offset: 0x000239A0
-	private void Start()
+	private void OnBecameVisible()
 	{
-		this.itemPosition = base.GetComponent<Transform>();
+		SetAnimationPos();
 	}
 
-	// Token: 0x060009C7 RID: 2503 RVA: 0x000255AE File Offset: 0x000239AE
-	private void Update()
+	private void OnWillRenderObject()
 	{
-		this.itemPosition.localPosition = new Vector3(0f, Mathf.Sin((float)Time.frameCount * 0.017453292f) / 2f + 1f, 0f);
+		SetAnimationPos();
 	}
 
-	// Token: 0x040006DA RID: 1754
-	private Transform itemPosition;
+	private void SetAnimationPos()
+	{
+		base.transform.localPosition = new Vector3(0f, (Mathf.Cos(Time.time * speed * 2f) * height / 2f) + 0.9f, 0f);
+	}
+
+	public float speed = 1f;
+
+	public float height = 1f;
 }

@@ -11,6 +11,9 @@ public class MathGameScript : MonoBehaviour
     // Token: 0x06000982 RID: 2434 RVA: 0x000231E0 File Offset: 0x000215E0
     private void Start()
     {
+        AudioListener.pause = true;
+        gc.learnMusic.ignoreListenerPause = true;
+        baldiAudio.ignoreListenerPause = true;
         this.gc.ActivateLearningGame();
         if (this.gc.notebooks == 1)
         {
@@ -49,6 +52,7 @@ public class MathGameScript : MonoBehaviour
             this.endDelay -= 1f * Time.unscaledDeltaTime;
             if (this.endDelay <= 0f)
             {
+                AudioListener.pause = false;
                 GC.Collect();
                 this.ExitGame();
             }
@@ -61,6 +65,28 @@ public class MathGameScript : MonoBehaviour
         this.playerAnswer.text = string.Empty;
         this.problem++;
         this.playerAnswer.ActivateInputField();
+        foreach(RectTransform t in apps)
+        {
+            t.gameObject.SetActive(false);
+        }
+        int[] theChosenOnes = new int[]{Mathf.RoundToInt(UnityEngine.Random.Range(0f, 2f)), Mathf.RoundToInt(UnityEngine.Random.Range(3f, 6f)), Mathf.RoundToInt(UnityEngine.Random.Range(7f, 11f)), apps.Length-1};
+        for(int i = 0; i < theChosenOnes.Length; i++)
+        {
+            if (problem > 3)
+            {
+                break;
+            }
+            apps[theChosenOnes[i]].anchoredPosition = new Vector2(UnityEngine.Random.Range(-200f, 200f), UnityEngine.Random.Range(-150f, 150f));
+            if (theChosenOnes[i] == 10)
+            {
+                apps[theChosenOnes[i]].anchoredPosition = new Vector2(0f, 0f);
+            }
+            if (i == theChosenOnes.Length-1 && problem >= 3 && gc.notebooks != 1)
+            {
+                break;
+            }
+            apps[theChosenOnes[i]].gameObject.SetActive(true);
+        }
         if (this.problem <= 3)
         {
             if ((this.gc.mode == "story" & (this.problem <= 2 || this.gc.notebooks <= 1)) || (this.gc.mode == "endless" & (this.problem <= 2 || this.gc.notebooks != 2)))
@@ -296,6 +322,7 @@ public class MathGameScript : MonoBehaviour
                 }
                 this.ClearAudioQueue();
                 this.baldiAudio.Stop();
+                baldiAudio.PlayOneShot(this.aud_Hang);
                 this.NewProblem();
             }
         }
@@ -344,17 +371,18 @@ public class MathGameScript : MonoBehaviour
     // Token: 0x0600098C RID: 2444 RVA: 0x00023E80 File Offset: 0x00022280
     public void ButtonPress(int value)
     {
-        if (value >= 0 & value <= 9)
+        if (value == -2)
         {
-            this.playerAnswer.text = this.playerAnswer.text + value;
+            SceneManager.LoadScene("TestRoom");
         }
         else if (value == -1)
         {
-            this.playerAnswer.text = this.playerAnswer.text + "-";
+            playerAnswer.text = solution.ToString();
+            CheckAnswer();
         }
         else
         {
-            this.playerAnswer.text = string.Empty;
+            CheckAnswer();
         }
     }
 
@@ -479,4 +507,8 @@ public class MathGameScript : MonoBehaviour
 
     // Token: 0x04000669 RID: 1641
     public AudioSource baldiAudio;
+
+    public RectTransform[] apps = new RectTransform[1];
+
+    public AudioClip aud_Hang;
 }

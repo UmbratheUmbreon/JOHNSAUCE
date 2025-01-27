@@ -7,6 +7,8 @@ public class Orb : MonoBehaviour
 {
     private void Start()
     {
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
         source = base.GetComponent<AudioSource>();
     }
     
